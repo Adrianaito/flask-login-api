@@ -1,0 +1,14 @@
+# created by virtualenv automatically
+**/tmp/**
+**/logs/**
+
+!**.md
+
+**/__pycache__/**
+**/credentials.json
+**.ignore
+.env
+**/local_tests.py
+**/sample**
+config.ini
+example**
