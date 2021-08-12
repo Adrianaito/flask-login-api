@@ -1,0 +1,15 @@
+# use this command to install all dependecies:
+# pip install -r requirements.txt
+
+flask
+flask-restful
+python-dotenv
+requests
+flask-cors
+configparser
+mysql-connector-python
+pyjwt #Don't install flask-jwt or pyJWT
+bcrypt
+reportlab
+pypdf2
+Japanera
