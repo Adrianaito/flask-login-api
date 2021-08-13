@@ -1,47 +1,32 @@
-from mysql.connector.errors import IntegrityError
-from Modules.DB import create_admin, delete_admin
-from flask_restful import Resource, request, reqparse
-from Modules.DB import delete_from_db
-from Modules.DB import get_user, update_users_db, get_all_users
-from Helpers.Jwt import validate_jwt
-from flask import jsonify, make_response
+from Modules.DB.AdminDb import create_admin, delete_admin
+from flask_restful import request
+from Modules.DB import get_user, update_users_db, get_all_users, delete_from_db
+from API.Base import BaseResource
 
 
-class Users(Resource):
+class Users(BaseResource):
 
     def get(self):
 
-        auth_header: dict = request.headers.get('Authorization')
+        payload = self.check_token()
 
-        if auth_header:
-            auth_token = auth_header.split(" ")[1]
+        if not payload:
+            return({'valid': False, 'message': 'Operation Not Allowed'}, 401)
         else:
-            auth_token = ''
-        if auth_token:
-            resp = validate_jwt(auth_token)
-            valid = resp["jwt_valid"]
-            if valid:
-                users = get_all_users()
+            users = get_all_users()
             return users
-        else:
-
-            return ({"valid": False, "message": "Provide a valid auth token"}, 401)
 
     def put(self):
 
-        auth_header: dict = request.headers.get('Authorization')
+        payload = self.check_token(1)
 
         my_payload: dict = request.get_json()
         email: str = my_payload["email"]
         delete: bool = my_payload["delete"]
 
-        if auth_header:
-            auth_token = auth_header.split(" ")[1]
+        if not payload:
+            return({'valid': False, 'message': 'Operation Not Allowed'}, 401)
         else:
-            auth_token = ''
-        resp = validate_jwt(auth_token)
-        valid = resp["jwt_valid"]
-        if valid:
             user = get_user(email)
             if not user:
                 return ({"valid": False, "message": "user not found"})
@@ -52,55 +37,36 @@ class Users(Resource):
             if delete:
                 delete_admin(email)
                 return ({"message": "admin removed", "valid": True, "admin": False}, 200)
-        else:
-
-            return ({"valid": False, "message": "Provide a valid auth token"}, 401)
 
     def patch(self):
 
-        auth_header: dict = request.headers.get('Authorization')
+        payload = self.check_token(1)
+
+        if not payload:
+            return({'valid': False, 'message': 'Operation Not Allowed'}, 401)
 
         my_payload: dict = request.get_json()
         name: str = my_payload["name"]
         email: str = my_payload["email"]
         id: str = my_payload["public_id"]
 
-        if auth_header:
-            auth_token = auth_header.split(" ")[1]
-        else:
-            auth_token = ''
-        resp = validate_jwt(auth_token)
-        valid = resp["jwt_valid"]
+        user = update_users_db(id, name, email)
 
-        if valid:
-
-            update_users_db(id, name, email)
-
-            return ({"valid": True, "message": "Updated user successfully!"}, 200)
-        else:
-
-            return ({"valid": False, "message": "Provide a valid auth token"}, 401)
+        return ({"valid": True, "message": "Updated user successfully!"}, 200)
 
     def delete(self):
 
-        auth_header: dict = request.headers.get('Authorization')
+        payload = self.check_token(1)
+
+        if not payload:
+            return({'valid': False, 'message': 'Operation Not Allowed'}, 401)
 
         my_payload: dict = request.get_json()
         data_id: str = my_payload["id"]
         table: str = my_payload["table"]
 
-        if auth_header:
-            auth_token = auth_header.split(" ")[1]
-        else:
-            auth_token = ''
-        resp = validate_jwt(auth_token)
-        valid = resp["jwt_valid"]
-
-        if valid:
-            delete_from_db(data_id, table)
-            return ({
-                "valid": True,
-                "message": "Successfully deleted"
-            }, 200)
-        else:
-            return ({"valid": False, "message": "Provide a valid auth token"}, 401)
+        delete_from_db(data_id, table)
+        return ({
+            "valid": True,
+            "message": "Successfully deleted"
+        }, 200)
