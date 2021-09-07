@@ -9,10 +9,11 @@ class Auth(Resource):
     def post(self):
 
         my_payload: dict = request.get_json()
+        # data:str = my_payload.get("data")
         email: str = my_payload.get("email")
         password: str = my_payload.get("password")
 
-        print(email)
+        print(my_payload)
         data = request.get_json()
         if not data:
             return ({"valid": False, "message": "Invalid Request", "token": None}, 403)

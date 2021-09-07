@@ -7,6 +7,7 @@ class Profile(BaseResource):
     def get(self):
 
         payload = self.check_token(0)
+        print(payload)
 
         if not payload:
             return({'valid': False, 'message': 'Operation Not Allowed'}, 401)

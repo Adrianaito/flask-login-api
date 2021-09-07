@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 def prepare_api():
     load_dotenv()
 
-    app = Flask("Document_Aotumation")
+    app = Flask("Login")
 
     return app
 
