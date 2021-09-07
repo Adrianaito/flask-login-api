@@ -36,7 +36,40 @@ def connect():
             # role INT NOT NULL
             # )'''
             # cursor.execute(sql)
-            # print("created table responses")
+            # print("created table users")
+
+            # cursor.execute("DROP TABLE IF EXISTS series")
+            # sql = '''CREATE TABLE series(
+            # id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+            # title CHAR(20),
+            # year CHAR(45),
+            # released VARCHAR(20),
+            # genre VARCHAR(20),
+            # country VARCHAR(20),
+            # poster VARCHAR(1000),
+            # imdbRating VARCHAR(20),
+            # imdbId VARCHAR(200) NOT NULL UNIQUE,
+            # type VARCHAR(20),
+            # totalSeasons VARCHAR(20),
+            # userId INT NOT NULL,
+            # FOREIGN key (userId) REFERENCES users(id)
+            # )'''
+            # cursor.execute(sql)
+            # print("created table series!")
+
+            # cursor.execute("DROP TABLE IF EXISTS comments")
+            # sql = '''CREATE TABLE comments(
+            #     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+            #     title varchar(200) NOT NULL,
+            #     content TEXT NOT NULL,
+            #     date TIMESTAMP NOT NULL,
+            #     userId INT NOT NULL,
+            #     FOREIGN key (userId) REFERENCES users(id),
+            #     serieId INT NOT NULL,
+            #     FOREIGN key (serieId) REFERENCES series(id)
+            # )'''
+            # cursor.execute(sql)
+            # print("created table comments!")
 
         else:
             print("Connection failed.")
