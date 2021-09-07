@@ -12,3 +12,4 @@ def define_routes(app):
     api.add_resource(Endpoints.Register, "/register/")
     api.add_resource(Endpoints.Users, "/users/")
     api.add_resource(Endpoints.Profile, "/profile/")
+    api.add_resource(Endpoints.Omdb, "/series/")
