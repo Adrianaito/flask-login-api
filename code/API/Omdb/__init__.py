@@ -6,15 +6,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-class Omdb(Resource):
+class Search(Resource):
 
-    def get(self):
+    def post(self):
         apiKey = environ["API_KEY"]
         my_payload: dict = request.get_json()
-        keyword: str = my_payload.get("keyword")
+        data = my_payload.get("data")
+        keyword: str = data.get("keyword")
         serie_id: str = my_payload.get("omdbId")
         # id example tt3896198
-
+        print("search payload", my_payload)
+        print(keyword)
         if keyword:
             url = f"http://www.omdbapi.com/?t={keyword}&apikey={apiKey}"
             r = requests.get(f"{url}")
