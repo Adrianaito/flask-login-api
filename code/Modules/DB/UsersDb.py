@@ -14,7 +14,7 @@ def get_user(email, table=table):
     db_config = read_db_config()
     cnx = MySQLConnection(**db_config)
     cursor = cnx.cursor(dictionary=True, buffered=True)
-    sql = f"SELECT email, password, role, public_id FROM {table} WHERE email = '%s'" % (
+    sql = f"SELECT email, password, role, public_id, id FROM {table} WHERE email = '%s'" % (
         email)
     cursor.execute(sql)
     user = cursor.fetchone()
