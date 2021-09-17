@@ -13,3 +13,9 @@ bcrypt
 reportlab
 pypdf2
 Japanera
+
+# for google api
+google-api-python-client
+google-auth 
+google-auth-httplib2 
+google-auth-oauthlib
