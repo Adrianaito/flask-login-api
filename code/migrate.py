@@ -25,51 +25,60 @@ def connect():
             # CAUTION: UNCOMMENTING THE FOLLOWING LINES AND RUNNING THE CODE WILL DROP TABLES PERMANENTLY!
 
             # ********************************************************************************************
+            cursor.execute("DROP TABLE IF EXISTS comments")
+            cursor.execute("DROP TABLE IF EXISTS series")
+            cursor.execute("DROP TABLE IF EXISTS users")
+            sql = '''CREATE TABLE users(
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+            public_id VARCHAR(45) NOT NULL UNIQUE,
+            name CHAR(20),
+            email CHAR(45) NOT NULL UNIQUE,
+            password VARCHAR(1000) NOT NULL,
+            role INT NOT NULL
+            )'''
+            cursor.execute(sql)
+            print("created table users")
+            cursor.execute("DESCRIBE users")
+            for x in cursor:
+                print(x)
 
-            # cursor.execute("DROP TABLE IF EXISTS users")
-            # sql = '''CREATE TABLE users(
-            # id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
-            # public_id VARCHAR(45) NOT NULL UNIQUE,
-            # name CHAR(20),
-            # email CHAR(45) NOT NULL UNIQUE,
-            # password VARCHAR(1000) NOT NULL,
-            # role INT NOT NULL
-            # )'''
-            # cursor.execute(sql)
-            # print("created table users")
+            sql = '''CREATE TABLE series(
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+            title CHAR(20),
+            year CHAR(45),
+            released VARCHAR(20),
+            genre VARCHAR(20),
+            country VARCHAR(20),
+            poster VARCHAR(1000),
+            imdbRating VARCHAR(20),
+            imdbId VARCHAR(200) NOT NULL UNIQUE,
+            type VARCHAR(20),
+            totalSeasons VARCHAR(20),
+            userId INT NOT NULL,
+            FOREIGN key (userId) REFERENCES users(id)
+            )'''
+            cursor.execute(sql)
+            print("created table series!")
+            cursor.execute("DESCRIBE series")
+            for x in cursor:
+                print(x)
 
-            # cursor.execute("DROP TABLE IF EXISTS series")
-            # sql = '''CREATE TABLE series(
-            # id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
-            # title CHAR(20),
-            # year CHAR(45),
-            # released VARCHAR(20),
-            # genre VARCHAR(20),
-            # country VARCHAR(20),
-            # poster VARCHAR(1000),
-            # imdbRating VARCHAR(20),
-            # imdbId VARCHAR(200) NOT NULL UNIQUE,
-            # type VARCHAR(20),
-            # totalSeasons VARCHAR(20),
-            # userId INT NOT NULL,
-            # FOREIGN key (userId) REFERENCES users(id)
-            # )'''
-            # cursor.execute(sql)
-            # print("created table series!")
+            sql = '''CREATE TABLE comments(
+                id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
+                title varchar(200) NOT NULL,
+                content TEXT NOT NULL,
+                date TIMESTAMP NOT NULL,
+                userId INT NOT NULL,
+                FOREIGN key (userId) REFERENCES users(id),
+                serieId INT NOT NULL,
+                FOREIGN key (serieId) REFERENCES series(id)
+            )'''
+            cursor.execute(sql)
+            print("created table comments!")
 
-            # cursor.execute("DROP TABLE IF EXISTS comments")
-            # sql = '''CREATE TABLE comments(
-            #     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,
-            #     title varchar(200) NOT NULL,
-            #     content TEXT NOT NULL,
-            #     date TIMESTAMP NOT NULL,
-            #     userId INT NOT NULL,
-            #     FOREIGN key (userId) REFERENCES users(id),
-            #     serieId INT NOT NULL,
-            #     FOREIGN key (serieId) REFERENCES series(id)
-            # )'''
-            # cursor.execute(sql)
-            # print("created table comments!")
+            cursor.execute("DESCRIBE comments")
+            for x in cursor:
+                print(x)
 
         else:
             print("Connection failed.")
